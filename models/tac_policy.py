@@ -288,7 +288,9 @@ class DepthEncoder(nn.Module):
                 depth_batch.permute(0, 3, 1, 2)
             ).permute(0, 2, 3, 1)
         depth_batch = self._normalize(depth_batch)
-        depth_embeddings = self.model(pixel_values=depth_batch, output_hidden_states=True)
+        depth_embeddings = self.model(
+            pixel_values=depth_batch, output_hidden_states=True
+        )
         depth_embeddings = depth_embeddings["hidden_states"][-2][:, 0, :]
         if self.post_process == "layernorm":
             return self.dropout(self.ln(depth_embeddings))

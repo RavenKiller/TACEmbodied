@@ -17,5 +17,6 @@ from typing import (
 @registry.register_sensor
 class NewDepthSensor(HabitatSimDepthSensor):
     cls_uuid: str = "new_depth"
+
     def _get_uuid(self, *args: Any, **kwargs: Any) -> str:
         return "new_depth"

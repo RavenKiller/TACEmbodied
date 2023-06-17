@@ -183,7 +183,10 @@ class MyAccessMgr(AgentAccessMgr):
                 param.requires_grad_(False)
 
         # !! depth
-        if self._config.habitat_baselines.rl.policy.depth.pretrained and self._config.habitat_baselines.rl.policy.name != 'HierarchicalPolicy':
+        if (
+            self._config.habitat_baselines.rl.policy.depth.pretrained
+            and self._config.habitat_baselines.rl.policy.name != "HierarchicalPolicy"
+        ):
             logger.info(
                 "loading pretrained depth encoder from {}".format(
                     self._config.habitat_baselines.rl.policy.depth.pretrained_weights

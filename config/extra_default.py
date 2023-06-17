@@ -26,7 +26,7 @@ class DepthConfig:
     pretrained: bool = True
     pretrained_weights: str = "data/checkpoints/TAC/best.pth"
     dropout: float = 0.0
-    post_process: str = "normalize" # for rearrange, use laryernorm
+    post_process: str = "normalize"  # for rearrange, use laryernorm
 
 
 @dataclass
@@ -36,6 +36,7 @@ class NewDepthSensorConfig(SimulatorCameraSensorConfig):
     max_depth: float = 10.0
     normalize_depth: bool = True
     uuid: str = "new_depth"
+
 
 cs.store(group="habitat_baselines/rl/policy/depth", name="depth_base", node=DepthConfig)
 cs.store(group="habitat_baselines/il/depth", name="depth_base", node=DepthConfig)

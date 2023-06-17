@@ -25,7 +25,7 @@ from habitat.tasks.rearrange.rearrange_sensors import GfxReplayMeasure
 from habitat.tasks.rearrange.utils import write_gfx_replay
 from habitat.utils import profiling_wrapper
 from habitat.utils.visualizations.utils import (
-    # observations_to_image,
+    observations_to_image,
     tile_images,
     overlay_frame,
 )
@@ -77,59 +77,13 @@ from habitat_baselines.utils.info_dict import (
     extract_scalars_from_infos,
 )
 import cv2
-# !!this function only used in rearrange visualization
-def observations_to_image(observation: Dict, info: Dict) -> np.ndarray:
-    r"""Generate image of single frame from observation and info
-    returned from a single environment step().
 
-    Args:
-        observation: observation returned from an environment step().
-        info: info returned from an environment step().
 
-    Returns:
-        generated image of a single frame.
-    """
-    render_obs_images: List[np.ndarray] = []
-    for sensor_name in observation:
-        if len(observation[sensor_name].shape) > 1:
-            obs_k = observation[sensor_name]
-            if not isinstance(obs_k, np.ndarray):
-                obs_k = obs_k.cpu().numpy()
-            if sensor_name=="new_depth":
-                obs_k = np.expand_dims(cv2.resize(obs_k, dsize=(256,256)),2)
-                obs_k = (obs_k/obs_k.max())*0.8
-            if obs_k.dtype != np.uint8:
-                obs_k = obs_k * 255.0
-                obs_k = obs_k.astype(np.uint8)
-            if obs_k.shape[2] == 1:
-                obs_k = np.concatenate([obs_k for _ in range(3)], axis=2)
-            render_obs_images.append(obs_k)
-
-    assert (
-        len(render_obs_images) > 0
-    ), "Expected at least one visual sensor enabled."
-
-    shapes_are_equal = len(set(x.shape for x in render_obs_images)) == 1
-    if not shapes_are_equal:
-        render_frame = tile_images(render_obs_images)
-    else:
-        render_frame = np.concatenate(render_obs_images, axis=1)
-
-    # draw collision
-    collisions_key = "collisions"
-    if collisions_key in info and info[collisions_key]["is_collision"]:
-        render_frame = draw_collision(render_frame)
-
-    top_down_map_key = "top_down_map"
-    if top_down_map_key in info:
-        top_down_map = maps.colorize_draw_agent_and_fit_to_height(
-            info[top_down_map_key], render_frame.shape[0]
-        )
-        render_frame = np.concatenate((render_frame, top_down_map), axis=1)
-    return render_frame
 def assign_new_depth(observations: List[Dict]) -> List[Dict]:
     for i in range(len(observations)):
-        observations[i]["new_depth"] = np.expand_dims(cv2.resize(observations[i]["head_depth"], dsize=(224,224)), 2)
+        observations[i]["new_depth"] = np.expand_dims(
+            cv2.resize(observations[i]["head_depth"], dsize=(224, 224)), 2
+        )
     return observations
 
 
@@ -901,7 +855,7 @@ class PPOTrainer(BaseRLTrainer):
                     ) == self.config.habitat_baselines.num_checkpoints:
                         break
 
-    def _eval_checkpoint(
+    def _eval_checkpoint(  # noqa: C901
         self,
         checkpoint_path: str,
         writer: TensorboardWriter,
@@ -1130,12 +1084,16 @@ class PPOTrainer(BaseRLTrainer):
                     )
                     ep_eval_count[k] += 1
                     if "Rearrange" in self.config.habitat.dataset.type:
-                        successesh.append(infos[i]["composite_stage_goals"]["stage_0_5_success"])
+                        successesh.append(
+                            infos[i]["composite_stage_goals"]["stage_0_5_success"]
+                        )
                         successes.append(float(infos[i]["composite_success"]))
-                        pbar.set_postfix({
-                            "sr":np.mean(successes),
-                            "sr-h":np.mean(successesh),
-                        })
+                        pbar.set_postfix(
+                            {
+                                "sr": np.mean(successes),
+                                "sr-h": np.mean(successesh),
+                            }
+                        )
                     # use scene_id + episode_id as unique id for storing stats
                     stats_episodes[(k, ep_eval_count[k])] = episode_stats
 

@@ -54,9 +54,10 @@ python run.py --config-name=eqa/il_pacman_nav.yaml habitat_baselines.evaluate=Tr
 ### Rearrangement
 Train
 ```
-sh train_skills_tac.sh
+sh train_skills.sh
 ```
 Evaluate
 ```
 python run.py --config-name=rearrange/rl_hierarchical_fixed.yaml habitat_baselines.evaluate=True
 ```
+
