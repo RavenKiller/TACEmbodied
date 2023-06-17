@@ -1,0 +1,8 @@
+tb
+*.log
+data
+.vscode
+__pycache__
+outputs
+*.mp4
+video_dir

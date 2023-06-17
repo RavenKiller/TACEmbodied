@@ -1,0 +1,104 @@
+# @package _global_
+
+defaults:
+  - /habitat_baselines/rl/policy/depth: depth_base
+  - /habitat_baselines: habitat_baselines_rl_config_base
+  - /benchmark/nav/imagenav: imagenav_gibson
+  - /habitat/simulator/agents/main_agent/sim_sensors/new_depth_sensor: new_depth_sensor
+  - _self_
+
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        sim_sensors:
+          new_depth_sensor:
+            width: 224
+            height: 224
+  env_task: MyGymHabitatEnv
+  task:
+    # success_reward: 2.5
+    # slack_reward: -1e-3
+    success_reward: 8.0
+    slack_reward: -1e-3
+    # measure_ratio: 0.1 # change measure_ratio in the new_environments.py
+    reward_measure: distance_to_goal
+    measurements:
+      success:
+        success_distance: 0.5
+
+habitat_baselines:
+  trainer_name: "myddppo"
+  tensorboard_dir: "data/tensorboard_dirs/imagenav_gibson"
+  checkpoint_folder: "data/checkpoints/imagenav_gibson"
+  eval_ckpt_path_dir: "data/checkpoints/imagenav_gibson"
+  verbose: False
+  torch_gpu_id: 0
+  video_dir: "data/video_dir"
+  video_fps: 10
+  test_episode_count: -1
+  num_environments: 10
+  num_updates: -1
+  total_num_steps: 1e7
+  log_interval: 1
+  num_checkpoints: 20
+  # Force PyTorch to be single threaded as
+  # this improves performance considerably
+  force_torch_single_threaded: True
+  eval:
+    video_option: ["disk"]
+
+  rl:
+    policy:
+      name: "PointNavTACPolicy"
+      depth:
+        trainable: False
+        pretrained: True
+        pretrained_weights: data/checkpoints/TAC/best.pth
+    agent:
+      type: MyAccessMgr
+    ppo:
+      # ppo params
+      clip_param: 0.2
+      ppo_epoch: 2
+      num_mini_batch: 1
+      value_loss_coef: 0.5
+      entropy_coef: 0.01
+      lr: 5e-4
+      eps: 1e-5
+      max_grad_norm: 0.2
+      num_steps: 64
+      use_gae: True
+      gamma: 0.99
+      tau: 0.95
+      use_linear_clip_decay: True
+      use_linear_lr_decay: True
+      reward_window_size: 50
+
+      use_normalized_advantage: True
+
+      hidden_size: 512
+
+      # Use double buffered sampling, typically helps
+      # when environment time is similar or larger than
+      # policy inference time during rollout generation
+      use_double_buffered_sampler: False
+    ddppo:
+      sync_frac: 0.6
+      # The PyTorch distributed backend to use
+      distrib_backend: NCCL
+      # Visual encoder backbone
+      pretrained_weights: /root/baseline/data/checkpoints/pointnav_gibson/ckpt.19.pth
+      # Initialize with pretrained weights
+      pretrained: True
+      # Initialize just the visual encoder backbone with pretrained weights
+      pretrained_encoder: False
+      # Whether the visual encoder backbone will be trained.
+      train_encoder: True
+      # Whether to reset the critic linear layer
+      reset_critic: True
+
+      # Model parameters
+      # backbone: resnet18
+      # rnn_type: GRU
+      # num_recurrent_layers: 2
