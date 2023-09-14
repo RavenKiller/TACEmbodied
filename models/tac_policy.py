@@ -39,6 +39,7 @@ from habitat_baselines.utils.common import get_num_actions
 
 
 from transformers import CLIPVisionConfig, CLIPImageProcessor, CLIPVisionModel
+from transformers import ViTConfig, ViTImageProcessor, ViTModel
 
 if TYPE_CHECKING:
     from omegaconf import DictConfig
@@ -234,25 +235,41 @@ class DepthEncoder(nn.Module):
         super().__init__()
         self.depth_config = depth_config
         self.is_blind = depth_config.is_blind
-        self.processor = CLIPImageProcessor.from_pretrained(
-            depth_config.model_name, local_files_only=True
-        )
-        # config = CLIPVisionConfig.from_pretrained(
-        #     depth_config.model_name, local_files_only=True
-        # )
-        # self.model = CLIPVisionModel(config)
-        # !! Use pretrained weight for test
-        self.model = CLIPVisionModel.from_pretrained(
-            depth_config.model_name, local_files_only=True
-        )
+        if "clip" in depth_config.model_name:
+            self.processor = CLIPImageProcessor.from_pretrained(
+                depth_config.model_name, local_files_only=True
+            )
+            config = CLIPVisionConfig.from_pretrained(
+                depth_config.model_name, local_files_only=True
+            )
+            self.model = CLIPVisionModel(config)
+            # !! Use pretrained weight for test
+            # self.model = CLIPVisionModel.from_pretrained(
+            #     depth_config.model_name, local_files_only=True
+            # )
+            # Normalize
+            self.depth_mean = torch.nn.Parameter(
+                torch.tensor([0.48145466, 0.4578275, 0.40821073]), requires_grad=False
+            )
+            self.depth_std = torch.nn.Parameter(
+                torch.tensor([0.26862954, 0.26130258, 0.27577711]), requires_grad=False
+            )
+        else:
+            self.processor = ViTImageProcessor.from_pretrained(
+                depth_config.model_name, local_files_only=False
+            )
+            self.model = ViTModel.from_pretrained(
+                depth_config.model_name, local_files_only=False
+            )
+            # Normalize
+            self.depth_mean = torch.nn.Parameter(
+                torch.tensor([0.5, 0.5, 0.5]), requires_grad=False
+            )
+            self.depth_std = torch.nn.Parameter(
+                torch.tensor([0.5, 0.5, 0.5]), requires_grad=False
+            )
 
-        # Normalize
-        self.depth_mean = torch.nn.Parameter(
-            torch.tensor([0.48145466, 0.4578275, 0.40821073]), requires_grad=False
-        )
-        self.depth_std = torch.nn.Parameter(
-            torch.tensor([0.26862954, 0.26130258, 0.27577711]), requires_grad=False
-        )
+
 
         # post-process
         self.post_process = depth_config.post_process

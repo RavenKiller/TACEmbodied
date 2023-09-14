@@ -21,14 +21,14 @@ habitat_baselines:
   verbose: False
   trainer_name: "myppo"
   torch_gpu_id: 0
-  tensorboard_dir: "data/tensorboard_dirs/pointnav_gibson"
-  video_dir: "data/video_dir_pointnav_gibson"
+  tensorboard_dir: "data/tensorboard_dirs/pointnav_gibson_baselineE"
+  video_dir: "data/video_dir_pointnav_gibson_baselineE"
   video_fps: 10
   # Evaluate on all episodes
   test_episode_count: -1
-  eval_ckpt_path_dir: "data/checkpoints/pointnav_gibson/ckpt.19.pth"
+  eval_ckpt_path_dir: "data/checkpoints/pointnav_gibson_baselineE/ckpt.19.pth"
   num_environments: 8
-  checkpoint_folder: "data/checkpoints/pointnav_gibson"
+  checkpoint_folder: "data/checkpoints/pointnav_gibson_baselineE"
   num_updates: -1
   total_num_steps: 1e7
   log_interval: 25
@@ -50,6 +50,7 @@ habitat_baselines:
         trainable: False
         pretrained: False
         pretrained_weights: data/checkpoints/TAC/best.pth
+        model_name: google/vit-base-patch32-224-in21k
     
     agent:
       type: MyAccessMgr
