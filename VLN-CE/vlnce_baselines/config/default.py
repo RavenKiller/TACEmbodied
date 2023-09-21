@@ -212,11 +212,11 @@ _C.RL.DDPPO.requeue_path = "data/interrupted_state.pth"
 # DEPTH CONFIG
 # ----------------------------------------------------------------------------
 _C.depth = CN()
-_C.depth.model_name = "openai/clip-vit-base-patch32"
+_C.depth.model_name = "google/vit-base-patch32-224-in21k" # google/vit-base-patch32-224-in21k, openai/clip-vit-base-patch32
 _C.depth.feature_dim = 768
 _C.depth.trainable = False
 _C.depth.is_blind = False
-_C.depth.pretrained = True
+_C.depth.pretrained = False
 _C.depth.pretrained_weights = "data/checkpoints/TAC/best.pth"
 _C.depth.dropout = 0.4
 
@@ -236,10 +236,10 @@ _C.MODEL.INSTRUCTION_ENCODER.sensor_uuid = "instruction"
 _C.MODEL.INSTRUCTION_ENCODER.vocab_size = 2504
 _C.MODEL.INSTRUCTION_ENCODER.use_pretrained_embeddings = True
 _C.MODEL.INSTRUCTION_ENCODER.embedding_file = (
-    "data/datasets/R2R_VLNCE_v1-3_preprocessed/embeddings.json.gz"
+    "data/datasets/R2R_VLNCE_v1-2_preprocessed/embeddings.json.gz"
 )
 _C.MODEL.INSTRUCTION_ENCODER.dataset_vocab = (
-    "data/datasets/R2R_VLNCE_v1-3_preprocessed/train/train.json.gz"
+    "data/datasets/R2R_VLNCE_v1-2_preprocessed/train/train.json.gz"
 )
 _C.MODEL.INSTRUCTION_ENCODER.fine_tune_embeddings = False
 _C.MODEL.INSTRUCTION_ENCODER.embedding_size = 50

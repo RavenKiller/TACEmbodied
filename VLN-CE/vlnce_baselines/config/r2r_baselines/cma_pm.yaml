@@ -4,7 +4,7 @@ TORCH_GPU_ID: 0
 NUM_ENVIRONMENTS: 8
 TENSORBOARD_DIR: data/tensorboard_dirs/cma_pm
 CHECKPOINT_FOLDER: data/checkpoints/cma_pm
-EVAL_CKPT_PATH_DIR: data/checkpoints/cma_pm
+EVAL_CKPT_PATH_DIR: data/checkpoints/cma_pm/ckpt.44.pth
 RESULTS_DIR: data/checkpoints/cma_pm/evals
 
 EVAL:
@@ -20,7 +20,7 @@ IL:
     iterations: 1
     update_size: 10819
     p: 1.0
-    preload_lmdb_features: True
+    preload_lmdb_features: False
     lmdb_features_dir: data/trajectories_dirs/cma/trajectories.lmdb
 
 MODEL:
