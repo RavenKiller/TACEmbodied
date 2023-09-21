@@ -31,7 +31,7 @@ habitat:
 habitat_baselines:
   torch_gpu_id: 0
   tensorboard_dir: "data/tensorboard_dirs/objectnav_hm3d_baselineE"
-  eval_ckpt_path_dir: "data/checkpoints/objectnav_hm3d_baselineE"
+  eval_ckpt_path_dir: "data/checkpoints/objectnav_hm3d_baselineE/ckpt.19.pth"
   checkpoint_folder: "data/checkpoints/objectnav_hm3d_baselineE"
   test_episode_count: -1
   num_environments: 20

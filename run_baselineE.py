@@ -22,6 +22,7 @@ import trainers.myppo_trainer
 import trainers.mypacman_trainer
 import trainers.myvqa_trainer
 import trainers.myver_trainer
+import trainers.rearrange_trainer
 import config.extra_default
 import os
 from datetime import datetime

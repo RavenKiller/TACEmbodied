@@ -24,10 +24,10 @@ habitat:
 habitat_baselines:
   trainer_name: "mypacman"
   torch_gpu_id: 0
-  eval_ckpt_path_dir: "data/eqa/nav/checkpoints/"
+  eval_ckpt_path_dir: "data/eqa/nav_baselineE/checkpoints/"
   num_processes: 8
-  checkpoint_folder: "data/eqa/nav/checkpoints"
-  tensorboard_dir: "data/eqa/nav/tb"
+  checkpoint_folder: "data/eqa/nav_baselineE/checkpoints"
+  tensorboard_dir: "data/eqa/nav_baselineE/tb"
   log_interval: 10
   checkpoint_interval: 1
   # Force PyTorch to be single threaded as
@@ -38,9 +38,9 @@ habitat_baselines:
     #if False, all frames for each episode are saved to disk (for NAV task later)
     frame_dataset_path: "data/datasets/eqa/frame_dataset/{split}_depth"
     eqa_cnn_pretrain_ckpt_path: "data/eqa/eqa_cnn_pretrain/checkpoints/epoch_5.ckpt"
-    results_dir: "data/eqa/nav/results/{split}"
+    results_dir: "data/eqa/nav_baselineE/results/{split}"
     log_metrics: True
-    output_log_dir: data/eqa/nav/logs
+    output_log_dir: data/eqa/nav_baselineE/logs
     eval_save_results: True
     eval_save_results_interval: 10
     nav:
@@ -51,5 +51,5 @@ habitat_baselines:
       max_episode_length: 100
     depth:
       trainable: False
-      pretrained: True
-      pretrained_weights: data/checkpoints/TAC/best.pth
+      pretrained: False
+      model_name: google/vit-base-patch32-224-in21k

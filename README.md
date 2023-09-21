@@ -43,13 +43,13 @@ python run.py --run-type eval --exp-config vlnce_baselines/config/r2r_baselines/
 ### EQA
 Train
 ```
-python run.py --config-name=eqa/il_vqa.yaml habitat_baselines.evaluate=False
 python run.py --config-name=eqa/il_pacman_nav.yaml habitat_baselines.evaluate=False
+python run.py --config-name=eqa/il_vqa.yaml habitat_baselines.evaluate=False
 ```
 Evaluate
 ```
-python run.py --config-name=eqa/il_vqa.yaml habitat_baselines.evaluate=True
 python run.py --config-name=eqa/il_pacman_nav.yaml habitat_baselines.evaluate=True
+python run.py --config-name=eqa/il_vqa.yaml habitat_baselines.evaluate=True
 ```
 ### Rearrangement
 Train

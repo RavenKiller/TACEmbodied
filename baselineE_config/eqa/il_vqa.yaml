@@ -9,9 +9,9 @@ defaults:
 habitat_baselines:
   trainer_name: "myvqa"
   torch_gpu_id: 0
-  eval_ckpt_path_dir: "data/eqa/vqa/checkpoints/"
-  checkpoint_folder: "data/eqa/vqa/checkpoints/"
-  tensorboard_dir: "data/eqa/vqa/tb"
+  eval_ckpt_path_dir: "data/eqa/vqa_baselineE/checkpoints/"
+  checkpoint_folder: "data/eqa/vqa_baselineE/checkpoints/"
+  tensorboard_dir: "data/eqa/vqa_baselineE/tb"
   log_interval: 100
   num_checkpoints: 50
   # Force PyTorch to be single threaded as
@@ -23,9 +23,9 @@ habitat_baselines:
     dataset_path: "data/datasets/eqa/frame_dataset/{split}/{split}.db"
     frame_dataset_path: "data/datasets/eqa/frame_dataset/{split}_depth"
     eqa_cnn_pretrain_ckpt_path: "data/eqa/eqa_cnn_pretrain/checkpoints/epoch_5.ckpt"
-    results_dir: "data/eqa/vqa/results/{split}"
+    results_dir: "data/eqa/vqa_baselineE/results/{split}"
     log_metrics: True
-    output_log_dir: "data/eqa/vqa/logs"
+    output_log_dir: "data/eqa/vqa_baselineE/logs"
     eval_save_results: True
     eval_save_results_interval: 2
     vqa:
@@ -37,5 +37,5 @@ habitat_baselines:
       freeze_encoder: False
     depth:
       trainable: False
-      pretrained: True
-      pretrained_weights: data/checkpoints/TAC/best.pth
+      pretrained: False
+      model_name: google/vit-base-patch32-224-in21k

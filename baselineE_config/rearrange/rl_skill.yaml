@@ -9,7 +9,7 @@ defaults:
   - _self_
 
 habitat_baselines:
-  verbose: False
+  verbose: True
   trainer_name: "myver"
   torch_gpu_id: 0
   tensorboard_dir: "tb"
@@ -18,7 +18,7 @@ habitat_baselines:
   test_episode_count: -1
   eval_ckpt_path_dir: "data/new_checkpoints"
   # 18 environments will just barely be below 11gb.
-  num_environments: 16
+  num_environments: 12
   num_updates: -1
   total_num_steps: 1.0e7
   log_interval: 10
@@ -29,7 +29,7 @@ habitat_baselines:
   eval_keys_to_include_in_name: ["reward", "force", "success"]
 
   eval:
-    video_option: ["disk"]
+    video_option: []
 
   rl:
     policy:
@@ -40,8 +40,9 @@ habitat_baselines:
         use_std_param: True
       depth:
         trainable: False
-        pretrained: True
+        pretrained: False
         pretrained_weights: data/checkpoints/TAC/best.pth
+        model_name: google/vit-base-patch32-224-in21k
         post_process: layernorm
     
     agent:

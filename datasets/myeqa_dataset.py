@@ -217,7 +217,7 @@ class MyEQADataset(wds.Dataset):
     ) -> None:
         r"""Writes episode's frame queue to disk."""
 
-        for idx, pos in enumerate(pos_queue[::-1]):
+        for idx, pos in enumerate(pos_queue):
             observation = self.env.sim.get_observations_at(pos.position, pos.rotation)
             img = observation["rgb"]
             str_idx = "{0:0=3d}".format(idx)
@@ -226,6 +226,13 @@ class MyEQADataset(wds.Dataset):
                 self.frame_dataset_path, "{}.{}".format(episode_id, str_idx)
             )
             cv2.imwrite(new_path + ".jpg", img[..., ::-1])
+
+            depth = observation["depth"]
+            depth = depth.repeat(3, axis=2)
+            depth_path = os.path.join(
+                self.frame_dataset_path, "{}.depth.{}".format(episode_id, str_idx)
+            )
+            cv2.imwrite(depth_path + ".jpg", (depth * 255).astype(np.uint8))
 
     def get_frames(self, frames_path, num=0):
         r"""Fetches frames from disk."""

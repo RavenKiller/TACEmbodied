@@ -33,7 +33,7 @@ habitat_baselines:
   video_fps: 30
   video_dir: "data/video_dir_rearrange"
   eval_ckpt_path_dir: ""
-  num_environments: 12
+  num_environments: 8
   writer_type: 'tb'
   num_updates: -1
   total_num_steps: 1e7

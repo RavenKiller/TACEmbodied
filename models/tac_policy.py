@@ -216,6 +216,7 @@ class ResNetEncoder(nn.Module):
             obs_k = obs_k.permute(0, 3, 1, 2)
             if self.key_needs_rescaling[k] is not None:
                 obs_k = obs_k.float() * self.key_needs_rescaling[k]  # normalize
+            obs_k[obs_k.isnan()] = 0
             cnn_input.append(obs_k)
 
         x = torch.cat(cnn_input, dim=1)
