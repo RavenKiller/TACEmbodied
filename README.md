@@ -1,4 +1,7 @@
-# Embodied experiments for TAC pre-training
+# Learning Depth Representation from RGB-D Videos by Time-Aware Contrastive Pre-training
+\[[paper](https://ieeexplore.ieee.org/document/10288539)\] \[[pre-training code](https://github.com/RavenKiller/TAC)\]
+
+This repository only contains embodied experiments.
 
 ## Preparation
 
